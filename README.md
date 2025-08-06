@@ -143,7 +143,7 @@ AI: [Automatically retrieves and displays campaign information]
 
 ### API Endpoints Used
 
-The integration uses the following Klaviyo API endpoints:
+The integration uses the following Klaviyo API endpoints with version `2025-07-15`:
 
 - `GET /api/v2/people/search` - Search for profiles
 - `POST /api/profiles/` - Create profiles

@@ -149,17 +149,33 @@ const getKlaviyoProfile = tool({
   }),
   execute: async ({ email }: { email: string }) => {
     try {
+      const apiKey = process.env.KLAVIYO_API_KEY || '';
+      
+      // Debug logging (remove in production)
+      console.log('Klaviyo API Key length:', apiKey.length);
+      console.log('Klaviyo API Key starts with:', apiKey.substring(0, 3));
+      
+      if (!apiKey) {
+        throw new Error('KLAVIYO_API_KEY environment variable is not set');
+      }
+
       const response = await fetch(`https://a.klaviyo.com/api/v2/people/search?email=${encodeURIComponent(email)}`, {
         headers: {
-          'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
+          'Authorization': `Klaviyo-API-Key ${apiKey}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
       if (!response.ok) {
-        throw new Error(`Klaviyo API error: ${response.status} ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('Klaviyo API Error Details:', {
+          status: response.status,
+          statusText: response.statusText,
+          body: errorText
+        });
+        throw new Error(`Klaviyo API error: ${response.status} ${response.statusText} - ${errorText}`);
       }
 
       const data = await response.json();
@@ -210,7 +226,7 @@ const getKlaviyoLists = tool({
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -282,7 +298,7 @@ const getKlaviyoCampaigns = tool({
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -342,7 +358,7 @@ const getKlaviyoMetrics = tool({
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -438,7 +454,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         },
         body: JSON.stringify(profileData)
       });
@@ -478,7 +494,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -521,7 +537,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         },
         body: JSON.stringify(updateData)
       });
@@ -555,7 +571,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         },
         body: JSON.stringify(listData)
       });
@@ -580,7 +596,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -611,7 +627,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         },
         body: JSON.stringify(subscriptionData)
       });
@@ -635,7 +651,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -656,7 +672,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
@@ -679,7 +695,7 @@ export const executions = {
           'Authorization': `Klaviyo-API-Key ${process.env.KLAVIYO_API_KEY || ''}`,
           'Content-Type': 'application/json',
           'Accept': 'application/json',
-          'Revision': '2024-02-15'
+          'Revision': '2025-07-15'
         }
       });
 
