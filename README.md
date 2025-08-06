@@ -15,11 +15,13 @@ A starter template for building AI-powered chat agents using Cloudflare's Agent 
 - ⚡️ Real-time streaming responses
 - 🔄 State management and chat history
 - 🎨 Modern, responsive UI
+- 📧 **Klaviyo API integration** for email marketing and customer management
 
 ## Prerequisites
 
 - Cloudflare account
 - OpenAI API key
+- Klaviyo API key (optional, for email marketing features)
 
 ## Quick Start
 
@@ -41,6 +43,7 @@ Create a `.dev.vars` file:
 
 ```env
 OPENAI_API_KEY=your_openai_api_key
+KLAVIYO_API_KEY=your_klaviyo_api_key
 ```
 
 4. Run locally:
@@ -55,13 +58,111 @@ npm start
 npm run deploy
 ```
 
+## Klaviyo Integration
+
+This project includes comprehensive Klaviyo API integration for managing email marketing campaigns, customer profiles, and lists. The integration provides both automatic and confirmation-required tools for safe operation.
+
+### Setup
+
+1. **Get your Klaviyo API key**:
+   - Log in to your Klaviyo account
+   - Go to Account → API Keys
+   - Create a new API key or copy an existing one
+
+2. **Configure the API key**:
+   - For local development: Add `KLAVIYO_API_KEY=your_key` to your `.dev.vars` file
+   - For production: Set the secret using `wrangler secret put KLAVIYO_API_KEY`
+
+### Available Klaviyo Tools
+
+#### Customer Profile Management
+
+- **`createKlaviyoProfile`** - Create a new customer profile (requires confirmation)
+  - Parameters: email, firstName, lastName, phoneNumber, address, etc.
+  
+- **`getKlaviyoProfile`** - Retrieve a customer profile by email (automatic)
+  - Parameters: email
+  
+- **`updateKlaviyoProfile`** - Update an existing customer profile (requires confirmation)
+  - Parameters: email, firstName, lastName, phoneNumber, address, etc.
+
+#### List Management
+
+- **`getKlaviyoLists`** - Get all lists from your Klaviyo account (automatic)
+  - Parameters: none
+  
+- **`createKlaviyoList`** - Create a new list (requires confirmation)
+  - Parameters: name, description (optional)
+  
+- **`addProfileToList`** - Add a customer to a list (requires confirmation)
+  - Parameters: email, listId
+  
+- **`removeProfileFromList`** - Remove a customer from a list (requires confirmation)
+  - Parameters: email, listId
+
+#### Campaign Management
+
+- **`getKlaviyoCampaigns`** - Get all campaigns from your account (automatic)
+  - Parameters: limit (optional, default: 50)
+  
+- **`sendKlaviyoCampaign`** - Send a campaign (requires confirmation)
+  - Parameters: campaignId
+
+#### Analytics
+
+- **`getKlaviyoMetrics`** - Get metrics and analytics data (automatic)
+  - Parameters: metricId (optional), since (optional), until (optional)
+
+### Example Usage
+
+Here are some example conversations you can have with the AI agent:
+
+```
+User: "Create a new customer profile for john.doe@example.com with first name John and last name Doe"
+AI: [Will show confirmation dialog] → Creates profile after confirmation
+
+User: "Get the profile for john.doe@example.com"
+AI: [Automatically retrieves and displays profile information]
+
+User: "Show me all my Klaviyo lists"
+AI: [Automatically retrieves and displays all lists]
+
+User: "Add john.doe@example.com to the 'Newsletter Subscribers' list"
+AI: [Will show confirmation dialog] → Adds to list after confirmation
+
+User: "What campaigns do I have?"
+AI: [Automatically retrieves and displays campaign information]
+```
+
+### Security Features
+
+- **Human-in-the-loop confirmation** for all data modification operations
+- **Automatic execution** for read-only operations
+- **Secure API key storage** using Cloudflare Secrets
+- **Error handling** with detailed error messages
+
+### API Endpoints Used
+
+The integration uses the following Klaviyo API endpoints:
+
+- `GET /api/v2/people/search` - Search for profiles
+- `POST /api/profiles/` - Create profiles
+- `PATCH /api/profiles/{id}/` - Update profiles
+- `GET /api/v2/lists` - Get lists
+- `POST /api/lists/` - Create lists
+- `POST /api/lists/{id}/subscriptions/` - Add to lists
+- `DELETE /api/lists/{id}/subscriptions/{profile_id}/` - Remove from lists
+- `GET /api/v2/campaigns` - Get campaigns
+- `POST /api/v2/campaign/{id}/send` - Send campaigns
+- `GET /api/v2/metrics` - Get metrics
+
 ## Project Structure
 
 ```
 ├── src/
 │   ├── app.tsx        # Chat UI implementation
 │   ├── server.ts      # Chat agent logic
-│   ├── tools.ts       # Tool definitions
+│   ├── tools.ts       # Tool definitions (includes Klaviyo tools)
 │   ├── utils.ts       # Helper functions
 │   └── styles.css     # UI styling
 ```

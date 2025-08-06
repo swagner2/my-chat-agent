@@ -50,9 +50,7 @@ export class Chat extends AIChatAgent<Env> {
         });
 
         // Create OpenAI model with API key from environment
-        const model = openai("gpt-4o-2024-11-20", {
-          apiKey: this.env.OPENAI_API_KEY,
-        });
+        const model = openai("gpt-4o-2024-11-20");
 
         // Stream the AI response using GPT-4
         const result = streamText({

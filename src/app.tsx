@@ -28,6 +28,13 @@ import {
 // NOTE: this should match the keys in the executions object in tools.ts
 const toolsRequiringConfirmation: (keyof typeof tools)[] = [
   "getWeatherInformation",
+  // Klaviyo tools that require confirmation
+  "createKlaviyoProfile",
+  "updateKlaviyoProfile",
+  "createKlaviyoList",
+  "addProfileToList",
+  "removeProfileFromList",
+  "sendKlaviyoCampaign",
 ];
 
 export default function Chat() {

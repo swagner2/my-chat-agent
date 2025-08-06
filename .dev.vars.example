@@ -1,3 +1,5 @@
 OPENAI_API_KEY=sk-proj-1234567890
+# Klaviyo API Key for managing email marketing campaigns and customer profiles
+KLAVIYO_API_KEY=pk_1234567890abcdef
 # Optional - Cloudflare AI Gateway https://developers.cloudflare.com/ai-gateway/
 # GATEWAY_BASE_URL=https://gateway.ai.cloudflare.com/v1/..
